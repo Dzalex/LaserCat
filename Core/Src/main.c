@@ -42,6 +42,7 @@
 RNG_HandleTypeDef hrng;
 
 TIM_HandleTypeDef htim4;
+TIM_HandleTypeDef htim13;
 
 /* USER CODE BEGIN PV */
 const uint16_t MAX_PWM_VALUE = 250;
@@ -53,6 +54,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_TIM4_Init(void);
 static void MX_RNG_Init(void);
+static void MX_TIM13_Init(void);
 /* USER CODE BEGIN PFP */
 void user_pwm_setvalue(uint16_t value);
 /* USER CODE END PFP */
@@ -93,6 +95,7 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM4_Init();
   MX_RNG_Init();
+  MX_TIM13_Init();
   /* USER CODE BEGIN 2 */
   //HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
   /* USER CODE END 2 */
@@ -230,6 +233,37 @@ static void MX_TIM4_Init(void)
 
   /* USER CODE END TIM4_Init 2 */
   HAL_TIM_MspPostInit(&htim4);
+
+}
+
+/**
+  * @brief TIM13 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM13_Init(void)
+{
+
+  /* USER CODE BEGIN TIM13_Init 0 */
+
+  /* USER CODE END TIM13_Init 0 */
+
+  /* USER CODE BEGIN TIM13_Init 1 */
+
+  /* USER CODE END TIM13_Init 1 */
+  htim13.Instance = TIM13;
+  htim13.Init.Prescaler = 50000-1;
+  htim13.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim13.Init.Period = 65535;
+  htim13.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim13.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim13) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM13_Init 2 */
+
+  /* USER CODE END TIM13_Init 2 */
 
 }
 
