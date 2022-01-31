@@ -47,6 +47,11 @@ TIM_HandleTypeDef htim13;
 /* USER CODE BEGIN PV */
 const uint16_t MAX_PWM_VALUE = 250;
 const uint16_t MIN_PWM_VALUE = 40;
+const uint16_t MAX_X = 250;
+const uint16_t MIN_X = 40;
+const uint16_t MAX_Y = 250;
+const uint16_t MIN_Y = 40;
+const uint16_t MAX_TIME = 3000;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
