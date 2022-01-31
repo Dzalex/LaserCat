@@ -98,6 +98,7 @@ int main(void)
   MX_TIM13_Init();
   /* USER CODE BEGIN 2 */
   //HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
+  HAL_TIM_Base_Start_IT(&htim13);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -254,7 +255,7 @@ static void MX_TIM13_Init(void)
   htim13.Instance = TIM13;
   htim13.Init.Prescaler = 50000-1;
   htim13.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim13.Init.Period = 65535;
+  htim13.Init.Period = 1000;
   htim13.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim13.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim13) != HAL_OK)
@@ -317,7 +318,7 @@ void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
-	HAL_GPIO_TogglePin (GPIOC, GPIO_PIN_13);
+	//HAL_GPIO_TogglePin (GPIOC, GPIO_PIN_13);
   __disable_irq();
   while (1)
   {
