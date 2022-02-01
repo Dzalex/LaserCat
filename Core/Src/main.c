@@ -63,6 +63,7 @@ static void MX_TIM13_Init(void);
 /* USER CODE BEGIN PFP */
 void User_PWMsetPulse_CH1(uint16_t value);
 void User_PWMsetPulse_CH2(uint16_t value);
+void HAL_TIM_PeriodElapsedCallback(htim);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -336,6 +337,10 @@ void User_PWMsetPulse_CH2(uint16_t value)
     HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_2);
 
     HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
+}
+
+HAL_TIM_PeriodElapsedCallback(htim){
+	HAL_GPIO_TogglePin (GPIOC, GPIO_PIN_13);
 }
 /* USER CODE END 4 */
 
