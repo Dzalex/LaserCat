@@ -79,6 +79,8 @@ int main(void)
   /* USER CODE BEGIN 1 */
 	uint16_t pwm_value = 40;
 	int16_t step = 0;
+
+	int16_t temp = 0;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -121,6 +123,9 @@ int main(void)
 	  if(pwm_value >= 250) step = -1;
 	  pwm_value += step;
 	  User_PWMsetPulse_CH1(pwm_value);
+
+	  temp = (-1) * pwm_value + 250 + 40;
+	  User_PWMsetPulse_CH2(temp);
   }
   /* USER CODE END 3 */
 }
