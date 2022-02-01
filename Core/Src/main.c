@@ -61,7 +61,8 @@ static void MX_TIM4_Init(void);
 static void MX_RNG_Init(void);
 static void MX_TIM13_Init(void);
 /* USER CODE BEGIN PFP */
-void user_pwm_setvalue(uint16_t value);
+void User_PWMsetPulse_CH1(uint16_t value);
+void User_PWMsetPulse_CH2(uint16_t value);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -119,7 +120,7 @@ int main(void)
 	  if(pwm_value <= 40) step = 1;
 	  if(pwm_value >= 250) step = -1;
 	  pwm_value += step;
-	  user_pwm_setvalue(pwm_value);
+	  User_PWMsetPulse_CH1(pwm_value);
   }
   /* USER CODE END 3 */
 }
@@ -304,7 +305,7 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-void user_pwm_setvalue(uint16_t value)
+void User_PWMsetPulse_CH1(uint16_t value)
 {
 	HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_1); // stop generation of pwm
     TIM_OC_InitTypeDef sConfigOC;
@@ -316,6 +317,20 @@ void user_pwm_setvalue(uint16_t value)
     HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_1);
 
     HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
+}
+
+void User_PWMsetPulse_CH2(uint16_t value)
+{
+	HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_2); // stop generation of pwm
+    TIM_OC_InitTypeDef sConfigOC;
+
+    sConfigOC.OCMode = TIM_OCMODE_PWM1;
+    sConfigOC.Pulse = value;
+    sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+    sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+    HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_2);
+
+    HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
 }
 /* USER CODE END 4 */
 
