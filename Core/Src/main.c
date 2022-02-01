@@ -63,7 +63,9 @@ static void MX_TIM13_Init(void);
 /* USER CODE BEGIN PFP */
 void User_PWMsetPulse_CH1(uint16_t value);
 void User_PWMsetPulse_CH2(uint16_t value);
+uint16_t Get_CorrectPWM(uint32_t random_number);
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -340,7 +342,32 @@ void User_PWMsetPulse_CH2(uint16_t value)
     HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
 }
 
+uint16_t Get_CorrectPWM(uint32_t random_number){
+	return ( random_number % (MAX_PWM_VALUE - MIN_PWM_VALUE) ) + MIN_PWM_VALUE;
+}
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+	if(time_CH1) {
+		time_CH1 = 0;
+
+		HAL_TIM_Base_Stop_IT(&htim13);
+		HAL_RNG_GenerateRandomNumber(&hrng, &global_random);
+
+		User_PWMsetPulse_CH1( Get_CorrectPWM(global_random) );
+
+		__HAL_TIM_SET_AUTORELOAD(&htim13, global_random % MAX_TIME);
+		HAL_TIM_Base_Start_IT(&htim13);
+	} else{
+		time_CH1 = 1;
+
+		HAL_TIM_Base_Stop_IT(&htim13);
+		HAL_RNG_GenerateRandomNumber(&hrng, &global_random);
+
+		User_PWMsetPulse_CH2( Get_CorrectPWM(global_random) );
+
+		__HAL_TIM_SET_AUTORELOAD(&htim13, global_random % MAX_TIME);
+		HAL_TIM_Base_Start_IT(&htim13);
+	}
 	HAL_GPIO_TogglePin (GPIOC, GPIO_PIN_13);
 }
 /* USER CODE END 4 */
