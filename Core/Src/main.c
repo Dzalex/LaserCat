@@ -47,10 +47,10 @@ TIM_HandleTypeDef htim13;
 /* USER CODE BEGIN PV */
 const uint16_t MAX_PWM_VALUE = 250;
 const uint16_t MIN_PWM_VALUE = 40;
-const uint16_t MAX_X = 250;
-const uint16_t MIN_X = 40;
-const uint16_t MAX_Y = 250;
-const uint16_t MIN_Y = 40;
+const uint16_t MAX_X = 170;
+const uint16_t MIN_X = 70;
+const uint16_t MAX_Y = 210;
+const uint16_t MIN_Y = 130;
 const uint16_t MAX_TIME = 1500;
 
 volatile uint8_t time_CH1 = 1;
@@ -66,7 +66,8 @@ static void MX_TIM13_Init(void);
 /* USER CODE BEGIN PFP */
 void User_PWMsetPulse_CH1(uint16_t value);
 void User_PWMsetPulse_CH2(uint16_t value);
-uint16_t Get_CorrectPWM(uint32_t random_number);
+uint16_t Get_CorrectPWM_X(uint32_t random_number);
+uint16_t Get_CorrectPWM_Y(uint32_t random_number);
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
 
 /* USER CODE END PFP */
@@ -343,8 +344,12 @@ void User_PWMsetPulse_CH2(uint16_t value)
     HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
 }
 
-uint16_t Get_CorrectPWM(uint32_t random_number){
-	return ( random_number % (MAX_PWM_VALUE - MIN_PWM_VALUE) ) + MIN_PWM_VALUE;
+uint16_t Get_CorrectPWM_X(uint32_t random_number){
+	return ( random_number % (MAX_X - MIN_X) ) + MIN_X;
+}
+
+uint16_t Get_CorrectPWM_Y(uint32_t random_number){
+	return ( random_number % (MAX_Y - MIN_Y) ) + MIN_Y;
 }
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
@@ -354,7 +359,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 		HAL_TIM_Base_Stop_IT(&htim13);
 		HAL_RNG_GenerateRandomNumber(&hrng, &global_random);
 
-		User_PWMsetPulse_CH1( Get_CorrectPWM(global_random) );
+		User_PWMsetPulse_CH1( Get_CorrectPWM_X(global_random) );
 
 		__HAL_TIM_SET_AUTORELOAD(&htim13, global_random % MAX_TIME);
 		HAL_TIM_Base_Start_IT(&htim13);
@@ -364,7 +369,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 		HAL_TIM_Base_Stop_IT(&htim13);
 		HAL_RNG_GenerateRandomNumber(&hrng, &global_random);
 
-		User_PWMsetPulse_CH2( Get_CorrectPWM(global_random) );
+		User_PWMsetPulse_CH2( Get_CorrectPWM_Y(global_random) );
 
 		__HAL_TIM_SET_AUTORELOAD(&htim13, global_random % MAX_TIME);
 		HAL_TIM_Base_Start_IT(&htim13);
